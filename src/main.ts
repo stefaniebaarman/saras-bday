@@ -1,4 +1,5 @@
 import './style.css'
+import { setupPhotoWall } from './lib/photoWall'
 
 const base = import.meta.env.BASE_URL
 
@@ -205,6 +206,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         </article>
       </div>
     </section>
+
+    <section class="photo-wall-section" aria-labelledby="photo-wall-title">
+      <p class="kicker">Live feed</p>
+      <h2 id="photo-wall-title">The photo<br><em>wall.</em></h2>
+      <p class="section-lede">Drop party pics here all night — polaroids for Sara &amp; Stefanie’s big day.</p>
+      <div id="photo-wall"></div>
+    </section>
   </main>
 `
 
@@ -306,3 +314,4 @@ function renderTrivia() {
 }
 
 renderTrivia()
+setupPhotoWall()
