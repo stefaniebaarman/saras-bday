@@ -48,10 +48,18 @@ export function setupPhotoWall() {
   root.innerHTML = `
     <input
       type="file"
-      id="wall-file"
+      id="wall-camera"
       class="wall-file-input"
       accept="image/*"
       capture="environment"
+      aria-hidden="true"
+      tabindex="-1"
+    />
+    <input
+      type="file"
+      id="wall-library"
+      class="wall-file-input"
+      accept="image/*"
       aria-hidden="true"
       tabindex="-1"
     />
@@ -69,7 +77,8 @@ export function setupPhotoWall() {
     </div>
   `
 
-  const fileInput = root.querySelector<HTMLInputElement>('#wall-file')!
+  const cameraInput = root.querySelector<HTMLInputElement>('#wall-camera')!
+  const libraryInput = root.querySelector<HTMLInputElement>('#wall-library')!
   const status = root.querySelector<HTMLElement>('#wall-status')!
   const grid = root.querySelector<HTMLElement>('#wall-grid')!
   const lightbox = root.querySelector<HTMLElement>('#lightbox')!
@@ -98,31 +107,56 @@ export function setupPhotoWall() {
     document.body.style.overflow = 'hidden'
   }
 
-  const openPicker = () => {
-    if (uploading) return
-    fileInput.click()
+  const handleFile = async (file: File | undefined) => {
+    if (!file || uploading) return
+    uploading = true
+    status.textContent = ''
+    renderGrid()
+
+    try {
+      await uploadWallPhoto({ file })
+      status.textContent = 'Cute! It’s on the wall.'
+    } catch (error) {
+      status.textContent = error instanceof Error ? error.message : 'Upload failed'
+    } finally {
+      uploading = false
+      renderGrid()
+    }
   }
 
   const renderGrid = () => {
     const mine = new Set(getMyPhotoIds())
     const addCard = `
-      <button
-        type="button"
-        class="gallery-card gallery-card-add ${uploading ? 'is-uploading' : ''}"
-        id="wall-add"
-        style="--tilt: -3deg"
-        ${uploading ? 'disabled' : ''}
-      >
-        <span class="gallery-card-frame add-frame">
-          <span class="add-camera" aria-hidden="true">
-            <span class="add-plus">+</span>
-          </span>
-          <span class="add-copy">
-            <strong>${uploading ? 'Uploading…' : 'Tap to add a pic'}</strong>
-            <span>${uploading ? 'Hang tight!' : 'Camera or camera roll'}</span>
-          </span>
-        </span>
-      </button>
+      <div class="gallery-card gallery-card-add ${uploading ? 'is-uploading' : ''}" style="--tilt: -3deg">
+        <div class="gallery-card-frame add-frame">
+          ${
+            uploading
+              ? `
+                <span class="add-camera" aria-hidden="true"><span class="add-plus">…</span></span>
+                <span class="add-copy">
+                  <strong>Uploading…</strong>
+                  <span>Hang tight!</span>
+                </span>
+              `
+              : `
+                <span class="add-copy">
+                  <strong>Add a pic</strong>
+                  <span>Pick one</span>
+                </span>
+                <div class="add-actions">
+                  <button type="button" class="add-option" id="wall-take-photo">
+                    <span class="add-option-icon" aria-hidden="true">📷</span>
+                    Take photo
+                  </button>
+                  <button type="button" class="add-option" id="wall-pick-library">
+                    <span class="add-option-icon" aria-hidden="true">🖼️</span>
+                    Camera roll
+                  </button>
+                </div>
+              `
+          }
+        </div>
+      </div>
     `
 
     const photoCards = photos
@@ -145,7 +179,13 @@ export function setupPhotoWall() {
       .join('')
 
     grid.innerHTML = addCard + photoCards
-    grid.querySelector('#wall-add')?.addEventListener('click', openPicker)
+
+    grid.querySelector('#wall-take-photo')?.addEventListener('click', () => {
+      cameraInput.click()
+    })
+    grid.querySelector('#wall-pick-library')?.addEventListener('click', () => {
+      libraryInput.click()
+    })
 
     grid.querySelectorAll<HTMLButtonElement>('.gallery-card[data-id]').forEach((card) => {
       card.addEventListener('click', () => {
@@ -169,25 +209,16 @@ export function setupPhotoWall() {
     },
   )
 
-  fileInput.addEventListener('change', async () => {
-    const file = fileInput.files?.[0]
-    fileInput.value = ''
-    if (!file) return
+  const bindInput = (input: HTMLInputElement) => {
+    input.addEventListener('change', async () => {
+      const file = input.files?.[0]
+      input.value = ''
+      await handleFile(file)
+    })
+  }
 
-    uploading = true
-    status.textContent = ''
-    renderGrid()
-
-    try {
-      await uploadWallPhoto({ file })
-      status.textContent = 'Cute! It’s on the wall.'
-    } catch (error) {
-      status.textContent = error instanceof Error ? error.message : 'Upload failed'
-    } finally {
-      uploading = false
-      renderGrid()
-    }
-  })
+  bindInput(cameraInput)
+  bindInput(libraryInput)
 
   lightboxClose.addEventListener('click', closeLightbox)
   lightbox.addEventListener('click', (event) => {

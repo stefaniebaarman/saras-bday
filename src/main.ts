@@ -119,7 +119,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </section>
 
     <section class="details" aria-labelledby="details-title">
-      <p class="kicker">The when &amp; where</p>
       <h2 id="details-title">Party details<br><em>locked in.</em></h2>
       <ul class="detail-list">
         <li>
@@ -147,7 +146,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </section>
 
     <section class="trivia-section" aria-labelledby="trivia-title">
-      <p class="kicker">Warm-up game</p>
       <h2 id="trivia-title">Peanuts<br><em>trivia.</em></h2>
       <p class="section-lede">Five questions. No psychiatric help required (unless you want it for a nickel).</p>
       <div class="trivia-board" id="trivia-board"></div>
@@ -155,7 +153,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <section class="playlist" aria-labelledby="playlist-title">
       <div class="playlist-inner">
-        <p class="kicker">Pregame soundtrack</p>
         <h2 id="playlist-title">Add a song<br><em>to the playlist.</em></h2>
         <p>We’re building the pregame vibes together. Drop your favorite tracks so the party starts off right.</p>
         <a
@@ -179,38 +176,9 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       </div>
     </section>
 
-    <section class="costumes" aria-labelledby="costumes-title">
-      <p class="kicker">Dress the part</p>
-      <h2 id="costumes-title">Costume<br><em>inspiration.</em></h2>
-      <p class="section-lede">Channel your favorite Peanuts character — no perfection required, just vibes.</p>
-      <div class="costume-grid">
-        <article class="costume-card costume-snoopy">
-          <h3>Snoopy</h3>
-          <p>White + black, floppy ears energy, red collar, or full Joe Cool shades.</p>
-        </article>
-        <article class="costume-card costume-woodstock">
-          <h3>Woodstock</h3>
-          <p>Sunny yellow, spiky hair, tiny but mighty best-friend energy.</p>
-        </article>
-        <article class="costume-card costume-charlie">
-          <h3>Charlie Brown</h3>
-          <p>Yellow tee with a black zigzag. Optional: a little good-grief sigh.</p>
-        </article>
-        <article class="costume-card costume-lucy">
-          <h3>Lucy</h3>
-          <p>Blue dress vibes, bold opinions, psychiatric booth optional.</p>
-        </article>
-        <article class="costume-card costume-patty">
-          <h3>Peppermint Patty</h3>
-          <p>Sandals, green shirt, freckles, and championship confidence.</p>
-        </article>
-      </div>
-    </section>
-
     <section class="photo-wall-section" aria-labelledby="photo-wall-title">
-      <p class="kicker">Live feed</p>
       <h2 id="photo-wall-title">The photo<br><em>wall.</em></h2>
-      <p class="section-lede">Tap the blank polaroid to drop a pic on the wall.</p>
+      <p class="section-lede">Add a pic from your camera or camera roll.</p>
       <div id="photo-wall"></div>
     </section>
   </main>
