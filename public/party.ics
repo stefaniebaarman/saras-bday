@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sara Stefanie Birthday//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:sara-stefanie-bday-2026-08-01@saras-bday
+DTSTAMP:20260728T200000Z
+DTSTART:20260801T210000Z
+DTEND:20260802T050000Z
+SUMMARY:Sara & Stefanie's Birthday Pregame
+DESCRIPTION:Peanuts / Snoopy themed pregame. Check the party site for the playlist!
+LOCATION:2100 11th St NW\, Washington\, DC
+END:VEVENT
+END:VCALENDAR
