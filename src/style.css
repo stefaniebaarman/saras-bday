@@ -373,7 +373,6 @@ h1 span {
 
 .details,
 .costumes,
-.dedications,
 .trivia-section {
   display: flex;
   flex-direction: column;
@@ -394,7 +393,6 @@ h1 span {
 
 .details h2,
 .costumes h2,
-.dedications h2,
 .trivia-section h2 {
   margin: 28px 0 20px;
   font-family: 'Fredoka', sans-serif;
@@ -405,7 +403,6 @@ h1 span {
 
 .details h2 em,
 .costumes h2 em,
-.dedications h2 em,
 .trivia-section h2 em {
   color: var(--red);
   font-style: normal;
@@ -448,14 +445,6 @@ h1 span {
   letter-spacing: .04em;
 }
 
-.detail-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 28px;
-}
-
 .action-button {
   display: inline-flex;
   align-items: center;
@@ -470,11 +459,6 @@ h1 span {
   cursor: pointer;
   box-shadow: 4px 4px 0 #181818;
   transition: transform .15s ease, box-shadow .15s ease;
-}
-
-.action-button-secondary {
-  background: #fff;
-  color: #181818;
 }
 
 .action-button:hover {
@@ -684,23 +668,6 @@ h1 span {
 .costume-lucy { border-top: 8px solid var(--blue); }
 .costume-patty { border-top: 8px solid #3ca55c; }
 
-.dedications {
-  background: #fff;
-}
-
-.dedications .kicker {
-  background: var(--red);
-  color: #fff;
-}
-
-.coming-note {
-  margin: 0;
-  padding: 14px 18px;
-  border: 3px dashed #181818;
-  background: var(--cream);
-  font-weight: 700;
-}
-
 .trivia-section {
   background: linear-gradient(180deg, #fffdf6 0%, #d6ebff 100%);
 }
@@ -885,7 +852,6 @@ h1 span {
 
   .details,
   .costumes,
-  .dedications,
   .trivia-section,
   .playlist {
     padding: 72px 20px;

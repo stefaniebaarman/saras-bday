@@ -10,7 +10,6 @@ const base = import.meta.env.BASE_URL
  * - "Still celebrating — join us!"
  */
 const party = {
-  title: "Sara & Stefanie's Birthday",
   dateLabel: 'Saturday, August 1, 2026',
   timeLabel: '5:00 PM ET',
   address: '2100 11th St NW',
@@ -18,26 +17,7 @@ const party = {
   dressCode: 'Peanuts / Snoopy fits',
   /** Local wall time in Eastern Daylight Time */
   startIso: '2026-08-01T17:00:00-04:00',
-  endIso: '2026-08-02T01:00:00-04:00',
   crewStatus: 'Pregame starts Saturday at 5 — see you there!',
-  dedicationsUrl: '', // paste a Google Form URL when ready
-}
-
-const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${party.address}, ${party.city}`)}`
-
-function toGCalStamp(iso: string) {
-  return new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')
-}
-
-function googleCalendarUrl() {
-  const params = new URLSearchParams({
-    action: 'TEMPLATE',
-    text: party.title,
-    dates: `${toGCalStamp(party.startIso)}/${toGCalStamp(party.endIso)}`,
-    details: `${party.dressCode}. Pregame playlist on the party site.`,
-    location: `${party.address}, ${party.city}`,
-  })
-  return `https://calendar.google.com/calendar/render?${params.toString()}`
 }
 
 const trivia = [
@@ -154,11 +134,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           <span>${party.dressCode}</span>
         </li>
       </ul>
-      <div class="detail-actions">
-        <a class="action-button" href="${googleCalendarUrl()}" target="_blank" rel="noopener noreferrer">Add to Google Calendar</a>
-        <a class="action-button action-button-secondary" href="${base}party.ics">Download .ics</a>
-        <a class="action-button action-button-secondary" href="${mapsUrl}" target="_blank" rel="noopener noreferrer">Open in Maps</a>
-      </div>
       <div class="countdown" id="countdown" aria-live="polite">
         <p class="countdown-label">Pregame starts in</p>
         <div class="countdown-grid">
@@ -168,6 +143,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           <div><strong id="cd-secs">0</strong><span>secs</span></div>
         </div>
       </div>
+    </section>
+
+    <section class="trivia-section" aria-labelledby="trivia-title">
+      <p class="kicker">Warm-up game</p>
+      <h2 id="trivia-title">Peanuts<br><em>trivia.</em></h2>
+      <p class="section-lede">Five questions. No psychiatric help required (unless you want it for a nickel).</p>
+      <div class="trivia-board" id="trivia-board"></div>
     </section>
 
     <section class="playlist" aria-labelledby="playlist-title">
@@ -222,24 +204,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           <p>Sandals, green shirt, freckles, and championship confidence.</p>
         </article>
       </div>
-    </section>
-
-    <section class="dedications" aria-labelledby="dedications-title">
-      <p class="kicker">Raise a glass</p>
-      <h2 id="dedications-title">Leave Sara &amp; Stefanie<br><em>a toast.</em></h2>
-      <p class="section-lede">A short note, a silly memory, or a birthday wish — we’ll save them for the night.</p>
-      ${
-        party.dedicationsUrl
-          ? `<a class="action-button" href="${party.dedicationsUrl}" target="_blank" rel="noopener noreferrer">Leave a toast</a>`
-          : `<p class="coming-note">Toast form coming soon — check back!</p>`
-      }
-    </section>
-
-    <section class="trivia-section" aria-labelledby="trivia-title">
-      <p class="kicker">Warm-up game</p>
-      <h2 id="trivia-title">Peanuts<br><em>trivia.</em></h2>
-      <p class="section-lede">Five questions. No psychiatric help required (unless you want it for a nickel).</p>
-      <div class="trivia-board" id="trivia-board"></div>
     </section>
   </main>
 `
