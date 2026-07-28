@@ -11,13 +11,6 @@ const base = import.meta.env.BASE_URL
  * - "Still celebrating — join us!"
  */
 const party = {
-  dateLabel: 'Saturday, August 1, 2026',
-  timeLabel: '5:00 PM ET',
-  address: '2100 11th St NW',
-  city: 'Washington, DC',
-  dressCode: 'Peanuts / Snoopy fits',
-  /** Local wall time in Eastern Daylight Time */
-  startIso: '2026-08-01T17:00:00-04:00',
   crewStatus: 'Pregame starts Saturday at 5 — see you there!',
 }
 
@@ -118,33 +111,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       </div>
     </section>
 
-    <section class="details" aria-labelledby="details-title">
-      <h2 id="details-title">Party details<br><em>locked in.</em></h2>
-      <ul class="detail-list">
-        <li>
-          <span class="detail-label">When</span>
-          <span>${party.dateLabel}<br>${party.timeLabel}</span>
-        </li>
-        <li>
-          <span class="detail-label">Where</span>
-          <span>${party.address}<br>${party.city}</span>
-        </li>
-        <li>
-          <span class="detail-label">Dress</span>
-          <span>${party.dressCode}</span>
-        </li>
-      </ul>
-      <div class="countdown" id="countdown" aria-live="polite">
-        <p class="countdown-label">Pregame starts in</p>
-        <div class="countdown-grid">
-          <div><strong id="cd-days">0</strong><span>days</span></div>
-          <div><strong id="cd-hours">0</strong><span>hours</span></div>
-          <div><strong id="cd-mins">0</strong><span>mins</span></div>
-          <div><strong id="cd-secs">0</strong><span>secs</span></div>
-        </div>
-      </div>
-    </section>
-
     <section class="trivia-section" aria-labelledby="trivia-title">
       <h2 id="trivia-title">Peanuts<br><em>trivia.</em></h2>
       <p class="section-lede">Five questions. No psychiatric help required (unless you want it for a nickel).</p>
@@ -183,37 +149,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </section>
   </main>
 `
-
-function updateCountdown() {
-  const root = document.querySelector('#countdown')
-  if (!root) return
-
-  const start = new Date(party.startIso).getTime()
-  const now = Date.now()
-  const diff = start - now
-
-  if (diff <= 0) {
-    root.innerHTML = `<p class="countdown-live">It’s party time — see you at pregame!</p>`
-    return
-  }
-
-  const days = Math.floor(diff / 86_400_000)
-  const hours = Math.floor((diff % 86_400_000) / 3_600_000)
-  const mins = Math.floor((diff % 3_600_000) / 60_000)
-  const secs = Math.floor((diff % 60_000) / 1000)
-
-  const set = (id: string, value: number) => {
-    const el = document.getElementById(id)
-    if (el) el.textContent = String(value)
-  }
-  set('cd-days', days)
-  set('cd-hours', hours)
-  set('cd-mins', mins)
-  set('cd-secs', secs)
-}
-
-updateCountdown()
-window.setInterval(updateCountdown, 1000)
 
 function renderTrivia() {
   const board = document.querySelector<HTMLElement>('#trivia-board')
