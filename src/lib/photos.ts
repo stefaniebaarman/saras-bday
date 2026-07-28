@@ -95,11 +95,7 @@ export function subscribeToPhotos(
   )
 }
 
-export async function uploadWallPhoto(input: {
-  file: File
-  name: string
-  caption: string
-}): Promise<WallPhoto> {
+export async function uploadWallPhoto(input: { file: File }): Promise<WallPhoto> {
   const uid = await ensureAnonymousAuth()
   const { db, storage } = getFirebase()
 
@@ -119,8 +115,8 @@ export async function uploadWallPhoto(input: {
   const docRef = await addDoc(collection(db, 'photos'), {
     url,
     storagePath,
-    name: input.name.trim() || 'Guest',
-    caption: input.caption.trim(),
+    name: 'Guest',
+    caption: '',
     uid,
     createdAt: serverTimestamp(),
   })
@@ -131,8 +127,8 @@ export async function uploadWallPhoto(input: {
     id: docRef.id,
     url,
     storagePath,
-    name: input.name.trim() || 'Guest',
-    caption: input.caption.trim(),
+    name: 'Guest',
+    caption: '',
     createdAt: new Date(),
     uid,
   }

@@ -47,19 +47,11 @@ export function setupPhotoWall() {
 
   root.innerHTML = `
     <form class="wall-upload" id="wall-upload">
-      <label class="wall-field">
-        <span>Your name</span>
-        <input type="text" name="name" maxlength="40" placeholder="Guest" autocomplete="nickname" />
-      </label>
-      <label class="wall-field">
-        <span>Caption (optional)</span>
-        <input type="text" name="caption" maxlength="80" placeholder="Best day ever!" />
-      </label>
       <label class="wall-file">
-        <span>Choose a photo</span>
+        <span>Add a party photo</span>
         <input type="file" name="photo" accept="image/*" capture="environment" required />
       </label>
-      <button class="action-button" type="submit">Add to the wall</button>
+      <button class="action-button" type="submit">Post to the wall</button>
       <p class="wall-status" id="wall-status" aria-live="polite"></p>
     </form>
     <div class="wall-grid" id="wall-grid" aria-live="polite">
@@ -69,8 +61,6 @@ export function setupPhotoWall() {
       <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">×</button>
       <img class="lightbox-img" id="lightbox-img" alt="" />
       <div class="lightbox-meta">
-        <p class="lightbox-name" id="lightbox-name"></p>
-        <p class="lightbox-caption" id="lightbox-caption"></p>
         <p class="lightbox-time" id="lightbox-time"></p>
         <button type="button" class="action-button action-button-secondary" id="lightbox-delete" hidden>Remove my photo</button>
       </div>
@@ -82,8 +72,6 @@ export function setupPhotoWall() {
   const grid = root.querySelector<HTMLElement>('#wall-grid')!
   const lightbox = root.querySelector<HTMLElement>('#lightbox')!
   const lightboxImg = root.querySelector<HTMLImageElement>('#lightbox-img')!
-  const lightboxName = root.querySelector<HTMLElement>('#lightbox-name')!
-  const lightboxCaption = root.querySelector<HTMLElement>('#lightbox-caption')!
   const lightboxTime = root.querySelector<HTMLElement>('#lightbox-time')!
   const lightboxDelete = root.querySelector<HTMLButtonElement>('#lightbox-delete')!
   const lightboxClose = root.querySelector<HTMLButtonElement>('#lightbox-close')!
@@ -100,9 +88,7 @@ export function setupPhotoWall() {
   const openLightbox = (photo: WallPhoto) => {
     selected = photo
     lightboxImg.src = photo.url
-    lightboxImg.alt = photo.caption || `Photo from ${photo.name}`
-    lightboxName.textContent = photo.name
-    lightboxCaption.textContent = photo.caption
+    lightboxImg.alt = 'Party photo'
     lightboxTime.textContent = formatTime(photo.createdAt)
     lightboxDelete.hidden = !getMyPhotoIds().includes(photo.id)
     lightbox.hidden = false
@@ -125,13 +111,10 @@ export function setupPhotoWall() {
             class="gallery-card ${isMine ? 'gallery-card-mine' : ''}"
             data-id="${photo.id}"
             style="--tilt: ${tiltFor(photo.id)}deg"
+            aria-label="Open party photo"
           >
             <span class="gallery-card-frame">
               <img src="${photo.url}" alt="" loading="lazy" />
-              <span class="gallery-card-caption">
-                <strong>${escapeHtml(photo.name)}${isMine ? ' · you' : ''}</strong>
-                <span>${escapeHtml(photo.caption || 'Party vibes')}</span>
-              </span>
             </span>
           </button>
         `
@@ -174,11 +157,7 @@ export function setupPhotoWall() {
     status.textContent = 'Uploading…'
 
     try {
-      await uploadWallPhoto({
-        file,
-        name: String(data.get('name') || ''),
-        caption: String(data.get('caption') || ''),
-      })
+      await uploadWallPhoto({ file })
       form.reset()
       status.textContent = 'Posted — thanks!'
     } catch (error) {
