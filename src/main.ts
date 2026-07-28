@@ -1,5 +1,7 @@
 import './style.css'
 
+const base = import.meta.env.BASE_URL
+
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <main>
     <section class="hero" aria-labelledby="party-title">
@@ -32,21 +34,21 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           <div class="speech-bubble">Best day ever!</div>
           <img
             class="woodstock"
-            src="/images/woodstock-clean.png"
+            src="${base}images/woodstock-clean.png"
             alt="Woodstock"
             width="140"
             height="150"
           />
           <img
             class="snoopy"
-            src="/images/snoopy-heart-clean.png"
+            src="${base}images/snoopy-heart-clean.png"
             alt="Snoopy hugging a big red heart"
             width="520"
             height="600"
           />
           <img
             class="snoopy-cool"
-            src="/images/hero-snoopy.png"
+            src="${base}images/hero-snoopy.png"
             alt="Joe Cool Snoopy"
             width="220"
             height="300"
@@ -95,7 +97,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <h2>Party details are<br><em>coming soon.</em></h2>
       <p>We’re getting everything just right. Check back soon for the when, where, and all the fun stuff.</p>
       <div class="friends" aria-hidden="true">
-        <img src="/images/snoopy-and-woodstock.png" alt="" width="220" height="240" />
+        <img src="${base}images/snoopy-and-woodstock.png" alt="" width="220" height="240" />
       </div>
     </section>
   </main>
