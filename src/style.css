@@ -765,54 +765,25 @@ h1 span {
 }
 
 #photo-wall {
+  position: relative;
   width: min(920px, 100%);
 }
 
-.wall-upload {
-  display: grid;
-  gap: 12px;
-  width: min(520px, 100%);
-  margin: 0 auto 28px;
-  padding: 20px;
-  border: 3px solid #181818;
-  background: #fff;
-  box-shadow: 5px 5px 0 #181818;
-  text-align: left;
-}
-
-.wall-field,
-.wall-file {
-  display: grid;
-  gap: 6px;
-  font-weight: 800;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-}
-
-.wall-field input,
-.wall-file input {
-  width: 100%;
-  padding: 11px 12px;
-  border: 2px solid #181818;
-  font: inherit;
-  font-weight: 600;
-  text-transform: none;
-  letter-spacing: 0;
-}
-
-.wall-upload .action-button {
-  justify-self: start;
-  margin-top: 4px;
+.wall-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .wall-status {
-  margin: 0;
+  margin: 0 0 18px;
   min-height: 1.2em;
-  color: #4a4842;
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: 0;
+  color: var(--red);
+  font-family: 'Fredoka', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .wall-setup,
@@ -864,6 +835,68 @@ h1 span {
   object-fit: cover;
   border: 2px solid #181818;
   background: #f3f0e6;
+}
+
+.gallery-card-add .add-frame {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  aspect-ratio: 1;
+  padding: 18px 14px;
+  background:
+    radial-gradient(circle at 30% 20%, #fff7b8 0%, transparent 45%),
+    #fffdf0;
+  border-style: dashed;
+}
+
+.add-camera {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: 3px solid #181818;
+  border-radius: 50%;
+  background: var(--yellow);
+  box-shadow: 3px 3px 0 #181818;
+}
+
+.add-plus {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  color: #181818;
+}
+
+.add-copy {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.add-copy strong {
+  font-family: 'Fredoka', sans-serif;
+  font-size: clamp(16px, 3.8vw, 20px);
+}
+
+.add-copy span {
+  color: #4a4842;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.gallery-card-add.is-uploading {
+  opacity: .75;
+  cursor: wait;
+}
+
+.gallery-card-add.is-uploading .add-camera {
+  animation: add-pulse 1s ease-in-out infinite;
+}
+
+@keyframes add-pulse {
+  50% { transform: scale(1.06); }
 }
 
 .lightbox {

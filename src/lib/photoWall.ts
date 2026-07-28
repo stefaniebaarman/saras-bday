@@ -46,14 +46,16 @@ export function setupPhotoWall() {
   }
 
   root.innerHTML = `
-    <form class="wall-upload" id="wall-upload">
-      <label class="wall-file">
-        <span>Add a party photo</span>
-        <input type="file" name="photo" accept="image/*" capture="environment" required />
-      </label>
-      <button class="action-button" type="submit">Post to the wall</button>
-      <p class="wall-status" id="wall-status" aria-live="polite"></p>
-    </form>
+    <input
+      type="file"
+      id="wall-file"
+      class="wall-file-input"
+      accept="image/*"
+      capture="environment"
+      aria-hidden="true"
+      tabindex="-1"
+    />
+    <p class="wall-status" id="wall-status" aria-live="polite"></p>
     <div class="wall-grid" id="wall-grid" aria-live="polite">
       <p class="wall-empty">Loading the wall…</p>
     </div>
@@ -67,7 +69,7 @@ export function setupPhotoWall() {
     </div>
   `
 
-  const form = root.querySelector<HTMLFormElement>('#wall-upload')!
+  const fileInput = root.querySelector<HTMLInputElement>('#wall-file')!
   const status = root.querySelector<HTMLElement>('#wall-status')!
   const grid = root.querySelector<HTMLElement>('#wall-grid')!
   const lightbox = root.querySelector<HTMLElement>('#lightbox')!
@@ -78,6 +80,7 @@ export function setupPhotoWall() {
 
   let photos: WallPhoto[] = []
   let selected: WallPhoto | null = null
+  let uploading = false
 
   const closeLightbox = () => {
     selected = null
@@ -95,14 +98,34 @@ export function setupPhotoWall() {
     document.body.style.overflow = 'hidden'
   }
 
+  const openPicker = () => {
+    if (uploading) return
+    fileInput.click()
+  }
+
   const renderGrid = () => {
     const mine = new Set(getMyPhotoIds())
-    if (photos.length === 0) {
-      grid.innerHTML = `<p class="wall-empty">No photos yet — be the first to post!</p>`
-      return
-    }
+    const addCard = `
+      <button
+        type="button"
+        class="gallery-card gallery-card-add ${uploading ? 'is-uploading' : ''}"
+        id="wall-add"
+        style="--tilt: -3deg"
+        ${uploading ? 'disabled' : ''}
+      >
+        <span class="gallery-card-frame add-frame">
+          <span class="add-camera" aria-hidden="true">
+            <span class="add-plus">+</span>
+          </span>
+          <span class="add-copy">
+            <strong>${uploading ? 'Uploading…' : 'Tap to add a pic'}</strong>
+            <span>${uploading ? 'Hang tight!' : 'Camera or camera roll'}</span>
+          </span>
+        </span>
+      </button>
+    `
 
-    grid.innerHTML = photos
+    const photoCards = photos
       .map((photo) => {
         const isMine = mine.has(photo.id)
         return `
@@ -121,7 +144,10 @@ export function setupPhotoWall() {
       })
       .join('')
 
-    grid.querySelectorAll<HTMLButtonElement>('.gallery-card').forEach((card) => {
+    grid.innerHTML = addCard + photoCards
+    grid.querySelector('#wall-add')?.addEventListener('click', openPicker)
+
+    grid.querySelectorAll<HTMLButtonElement>('.gallery-card[data-id]').forEach((card) => {
       card.addEventListener('click', () => {
         const photo = photos.find((item) => item.id === card.dataset.id)
         if (photo) openLightbox(photo)
@@ -143,27 +169,23 @@ export function setupPhotoWall() {
     },
   )
 
-  form.addEventListener('submit', async (event) => {
-    event.preventDefault()
-    const data = new FormData(form)
-    const file = data.get('photo')
-    if (!(file instanceof File) || !file.size) {
-      status.textContent = 'Pick a photo first'
-      return
-    }
+  fileInput.addEventListener('change', async () => {
+    const file = fileInput.files?.[0]
+    fileInput.value = ''
+    if (!file) return
 
-    const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement
-    submit.disabled = true
-    status.textContent = 'Uploading…'
+    uploading = true
+    status.textContent = ''
+    renderGrid()
 
     try {
       await uploadWallPhoto({ file })
-      form.reset()
-      status.textContent = 'Posted — thanks!'
+      status.textContent = 'Cute! It’s on the wall.'
     } catch (error) {
       status.textContent = error instanceof Error ? error.message : 'Upload failed'
     } finally {
-      submit.disabled = false
+      uploading = false
+      renderGrid()
     }
   })
 
