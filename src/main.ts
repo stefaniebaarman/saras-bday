@@ -3,17 +3,6 @@ import { setupPhotoWall } from './lib/photoWall'
 
 const base = import.meta.env.BASE_URL
 
-/**
- * Edit these when party facts or night-of status change.
- * crewStatus examples:
- * - "At pregame — come on over!"
- * - "Heading to the bars — check the group chat"
- * - "Still celebrating — join us!"
- */
-const party = {
-  crewStatus: 'Pregame starts Saturday at 5 — see you there!',
-}
-
 const trivia = [
   {
     q: 'What kind of dog is Snoopy?',
@@ -44,11 +33,6 @@ const trivia = [
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <main>
-    <div class="crew-banner" role="status">
-      <span class="crew-label">Where’s the crew?</span>
-      <span class="crew-status">${party.crewStatus}</span>
-    </div>
-
     <section class="hero" aria-labelledby="party-title">
       <div class="sunburst" aria-hidden="true"></div>
       <div class="cloud cloud-one" aria-hidden="true"></div>
@@ -76,29 +60,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         </div>
 
         <div class="art-wrap">
-          <div class="speech-bubble">Best day ever!</div>
           <img
-            class="woodstock"
-            src="${base}images/woodstock-clean.png"
-            alt="Woodstock"
-            width="140"
-            height="150"
+            class="snoopy-dance"
+            src="${base}images/snoopy-dance.gif"
+            alt="Snoopy doing a happy dance"
+            width="480"
+            height="480"
           />
-          <img
-            class="snoopy"
-            src="${base}images/snoopy-heart-clean.png"
-            alt="Snoopy hugging a big red heart"
-            width="520"
-            height="600"
-          />
-          <img
-            class="snoopy-cool"
-            src="${base}images/hero-snoopy.png"
-            alt="Joe Cool Snoopy"
-            width="220"
-            height="300"
-          />
-          <div class="ground-line" aria-hidden="true"></div>
         </div>
       </div>
 
