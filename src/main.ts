@@ -29,6 +29,31 @@ const trivia = [
     choices: ['Cool Dog', 'Joe Cool', 'Ace Beagle', 'Mr. Smooth'],
     answer: 1,
   },
+  {
+    q: 'Who always pulls the football away from Charlie Brown?',
+    choices: ['Peppermint Patty', 'Sally', 'Lucy', 'Marcie'],
+    answer: 2,
+  },
+  {
+    q: 'What instrument does Schroeder play?',
+    choices: ['Guitar', 'Drums', 'Violin', 'Piano'],
+    answer: 3,
+  },
+  {
+    q: 'What does Linus never leave home without?',
+    choices: ['His blanket', 'His lunchbox', 'His kite', 'His baseball glove'],
+    answer: 0,
+  },
+  {
+    q: 'What is Peppermint Patty’s real first name?',
+    choices: ['Patricia', 'Pamela', 'Penny', 'Paula'],
+    answer: 0,
+  },
+  {
+    q: 'In “A Charlie Brown Christmas,” what does Charlie Brown want instead of a fancy aluminum tree?',
+    choices: ['A plastic palm', 'A big shiny star', 'A real little tree', 'No tree at all'],
+    answer: 2,
+  },
 ]
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
@@ -60,13 +85,16 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         </div>
 
         <div class="art-wrap">
-          <img
-            class="snoopy-dance"
-            src="${base}images/snoopy-dance.gif"
-            alt="Snoopy doing a happy dance"
-            width="480"
-            height="480"
-          />
+          <picture>
+            <source srcset="${base}images/snoopy-dance.webp" type="image/webp" />
+            <img
+              class="snoopy-dance"
+              src="${base}images/snoopy-dance.gif"
+              alt="Snoopy and Woodstock dancing in party hats"
+              width="370"
+              height="296"
+            />
+          </picture>
         </div>
       </div>
 
@@ -81,7 +109,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <section class="trivia-section" aria-labelledby="trivia-title">
       <h2 id="trivia-title">Peanuts<br><em>trivia.</em></h2>
-      <p class="section-lede">Five questions. No psychiatric help required (unless you want it for a nickel).</p>
+      <p class="section-lede">Ten questions. No psychiatric help required (unless you want it for a nickel).</p>
       <div class="trivia-board" id="trivia-board"></div>
     </section>
 
